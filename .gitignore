@@ -8,3 +8,4 @@ build/
 .gpu-tracker/
 .env
 .venv/
+.DS_Store
