@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gpu-tracker"
+version = "0.1.0"
+description = "GPU Session Recovery Tool — track long-running commands, recover from crashes"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Environment :: Console",
+    "Topic :: System :: Monitoring",
+]
+
+[project.scripts]
+gpu-tracker = "gpu_tracker.cli:main"
+
+[project.optional-dependencies]
+rich = ["rich>=12.0"]
