@@ -22,25 +22,25 @@ gpu-tracker is **not** a background daemon. You run your commands **through** it
 
 ```
 # Without gpu-tracker:
-python train.py --epochs 10              # SSH koptu, nerede kaldın? bilmiyorsun
+python train.py --epochs 10              # SSH drops, you have no idea where you left off
 
 # With gpu-tracker:
-gpu-tracker run "python train.py"        # aynı komutu çalıştırır + state'i JSON'a yazar
+gpu-tracker run "python train.py"        # runs the same command + writes state to JSON
 ```
 
 The flow:
 
 ```
-1. gpu-tracker init "my session"         # .gpu-tracker/ klasörü oluşur
-2. gpu-tracker add "python step1.py"     # komutları planla
+1. gpu-tracker init "my session"         # creates .gpu-tracker/ directory
+2. gpu-tracker add "python step1.py"     # plan your commands
 3. gpu-tracker add "python step2.py"
-4. gpu-tracker run-all                   # hepsini sırayla çalıştır
-   └─ her komut bittikçe JSON güncellenir (5 saniyede bir de ara kayıt)
-5. [SSH kopar / pod çöker]
-6. [yeni pod aç, aynı dizine git]
-7. gpu-tracker status                    # hangileri bitti, hangisi crash oldu
-8. gpu-tracker retry                     # crash olanı tekrar çalıştır
-9. gpu-tracker next --run                # kalan pending'lerle devam et
+4. gpu-tracker run-all                   # run all sequentially
+   └─ JSON is updated after each command (also flushed every 5 seconds)
+5. [SSH drops / pod crashes]
+6. [open new pod, go to same directory]
+7. gpu-tracker status                    # see what finished, what crashed
+8. gpu-tracker retry                     # re-run the crashed command
+9. gpu-tracker next --run                # continue with remaining pending
 ```
 
 State is stored locally in `.gpu-tracker/` inside your working directory. Nothing is sent to GitHub or any remote service. If your workspace is on persistent storage (e.g. `/workspace` on RunPod), the state survives pod restarts.
